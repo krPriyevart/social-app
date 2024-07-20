@@ -1,6 +1,6 @@
 import React from 'react';
 import './stylesheet/Dashboard.css';
-
+import { Link } from 'react-router-dom';
 const Layout = ({ children }) => {
   return (
     <div className="dashboard">
@@ -34,10 +34,12 @@ const Layout = ({ children }) => {
             <div className="sidebar-icon">{/* Add your icon here */}</div>
             <div className="sidebar-label px-[50px]">Custom Playlists</div>
           </div>
+          <Link to="/logout">
           <div className="sidebar-item mt-10">
             <div className="sidebar-icon">{/* Add your icon here */}</div>
             <div className="sidebar-label">Logout</div>
           </div>
+          </Link>
         </div>
       </div>
       <div className="m_content">

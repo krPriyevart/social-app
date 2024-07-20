@@ -1,18 +1,12 @@
-// src/RegistrationForm.js
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react'
-import { Upload } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
     email: '',
-    username: '',
     password: '',
-    avatar: null,
-    coverImage: null,
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -25,13 +19,6 @@ const Register = () => {
     });
   };
 
-  const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: files[0],
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,16 +28,12 @@ const Register = () => {
     });
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/users/register', formDataToSend, 
-      {
+      const response = await axios.post('http://localhost:8080/api/v1/users/login', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-    
-      },{
-        withCredentials: true, // Ensure cookies are sent with requests
       });
-      setSuccess('User Registered Successfully');
+      setSuccess('User Login Successfully');
       // setTimeout(() => {
       //   navigate('/login');
       // }, 3000);
@@ -61,8 +44,7 @@ const Register = () => {
     }
   };
 
-  return (
-
+  return (<>
     <section>
       <div className="grid grid-cols-1 lg:grid-cols-2  h-lvh">
         <div className="relative flex items-end px-4 pb-10 pt-60 sm:px-6 sm:pb-16 md:justify-center lg:px-8 lg:pb-24">
@@ -77,7 +59,7 @@ const Register = () => {
           
           <div className="absolute " style={{top:'100px', left:'100px', width:'500px',height:'100px'}}>  
           <h3 className="text-7xl font-bold text-white">
-                Social-App
+                MOLITUBE
             </h3>
           </div>
           <div className="relative">
@@ -89,26 +71,24 @@ const Register = () => {
           </div>
         </div>
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-        
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {success && <p style={{ color: 'green' }}>{success}</p>}
           <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-          {success && <p style={{ color: 'green' }}>{success}</p>}
             <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">Sign in</h2>
             <p className="mt-2 text-base text-gray-600">
-            Already have an account?{' '}
+            Don&apos;t have an account?{' '}
               <Link
-                to="/login"
+                to="/register"
                 title=""
                 className="font-medium text-black transition-all duration-200 hover:underline"
               >
-                Login 
+                Create a free account
               </Link>
             </p>
             <form onSubmit={handleSubmit} className="mt-8">
               <div className="space-y-5">
-   
-                <div>
-                  <label htmlFor="email" className="text-base font-medium text-gray-900">
+                {/* <div>
+                  <label htmlFor="name" className="text-base font-medium text-gray-900">
                     {' '}
                     Full Name{' '}
                   </label>
@@ -116,41 +96,25 @@ const Register = () => {
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="text"
-                      name="fullName"
-                      value={formData.fullName}
-                      onChange={handleChange}
-                      required
-                      />
+                      placeholder="Full Name"
+                      id="name"
+                    ></input>
                   </div>
-                </div>                
+                </div> */}
                 <div>
                   <label htmlFor="email" className="text-base font-medium text-gray-900">
                     {' '}
-                    Email address{' '}
+                    Email address/ Username{' '}
                   </label>
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="email"
-                      name="email"
+                      placeholder="Email"
+                      id="email"
                       value={formData.email}
                       onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label htmlFor="email" className="text-base font-medium text-gray-900">
-                    {' '}
-                    Username{' '}
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="text"
-                      name="username"
-                      value={formData.username}
-                      onChange={handleChange}
-                    />
+                    ></input>
                   </div>
                 </div>
                 <div>
@@ -159,54 +123,35 @@ const Register = () => {
                       {' '}
                       Password{' '}
                     </label>
-                    
+                    <a
+                      href="#"
+                      title=""
+                      className="text-sm font-semibold text-black hover:underline"
+                    >
+                      {' '}
+                      Forgot password?{' '}
+                    </a>
                   </div>
                   <div className="mt-2">
                     <input
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="password"
-                      name="password"
+                      placeholder="Password"
+                      id="password"
                       value={formData.password}
                       onChange={handleChange}
-                    />
-                  </div>                  
-                  <div className="mt-2 flex h-10 w-full rounded-md ">
-                    <div className='relative inline-block w-1/3 '> 
-                    <button name="avatar" className='w-full bg-zinc-600 py-2 font-semibold text-white hover:bg-black/80  rounded'>Avatar</button>  
-                    <input
-                      className="absolute inset-0 opacity-0"
-                      type="file"
-                      name="avatar"
-                      onChange={handleFileChange}
-                      required
-                    /></div>                    
-                    <div className='relative inline-block w-1/3 mx-8'> 
-                    <button name="avatar" className='w-full bg-zinc-600  py-2 font-semibold text-white hover:bg-black/80  rounded'> Cover Image </button>  
-                    <input
-                      className="absolute inset-0 opacity-0"
-                      type="file"
-                      name="coverImage"
-                      onChange={handleFileChange}
-                      required
-                    /></div>
-                    {/* <span name="avatar" className=' w-1/3 bg-black py-2 mx-4 font-semibold leading-7 text-white hover:bg-black/80 '> coverImage  
-                    <input
-                      className="opacity-50"
-                      type="file"
-                      name="coverImage"
-                      onChange={handleFileChange}
-                      required
-                    /></span> */}
-                    
+                    ></input>
                   </div>
                 </div>
                 <div>
+                    <Link to="/dashboard">
                   <button
                     type="submit"
                     className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                   >
                     Get started <ArrowRight className="ml-2" size={16} />
                   </button>
+                  </Link>
                 </div>
               </div>
             </form>
@@ -250,7 +195,82 @@ const Register = () => {
     </section>
 
 
-  );
-};
+    <div>
+      <h2>Register</h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {success && <p style={{ color: 'green' }}>{success}</p>}
+      
+      <form onSubmit={handleSubmit} className="w-full max-w-lg mx-auto bg-white p-8 border border-gray-300 rounded-lg shadow-md">
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+        <input
+          type="text"
+          name="fullName"
+          value={formData.fullName}
+          onChange={handleChange}
+          required
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
+        <input
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Avatar</label>
+        <input
+          type="file"
+          name="avatar"
+          onChange={handleFileChange}
+          required
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Cover Image</label>
+        <input
+          type="file"
+          name="coverImage"
+          onChange={handleFileChange}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+      </div>
+      <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        Register
+      </button>
+    </form>
+    </div>
+    </>
 
-export default Register;
+  )
+}
+export default Login;

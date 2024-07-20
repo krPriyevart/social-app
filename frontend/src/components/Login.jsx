@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import axios
+import axios from 'axios'; 
 axios.defaults.withCredentials = true;
 
 const Login = () => {
@@ -27,13 +27,13 @@ const Login = () => {
     try {
       // const response = await axios.post('http://localhost:8080/api/v1/users/login', formData);
       const response = await axios.post('http://localhost:8080/api/v1/users/login', formData, {
-        withCredentials: true, // Ensure cookies are sent with requests
+        withCredentials: true, 
       });
       setSuccess('User Login Successfully');
       setError('');
-      // setTimeout(() => {
-      //   navigate('/dashboard'); // Adjust the navigation route as needed
-      // }, 3000);
+      setTimeout(() => {
+        navigate('/dashboard'); 
+      }, 2000);
     } catch (err) {
       setError(err.response.data.message || 'Something went wrong');
       setSuccess('');
@@ -57,9 +57,9 @@ const Login = () => {
           </div>
         </div>
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
+          <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
           {error && <p style={{ color: 'red' }}>{error}</p>}
           {success && <p style={{ color: 'green' }}>{success}</p>}
-          <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
             <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">Sign in</h2>
             <p className="mt-2 text-base text-gray-600">
               Don&apos;t have an account?{' '}
