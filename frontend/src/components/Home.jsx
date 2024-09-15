@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <header className="header">
-        <div className="logo">MOLITUBE</div>
+        <div className="logo">SOCIALAPP</div>
         <nav className="nav">
           <Link to="/" className="nav-link">Home</Link>
           <Link to="#" className="nav-link">Features</Link>

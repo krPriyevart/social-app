@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; 
+import boyimg from '../assets/registerlogo.png'
 axios.defaults.withCredentials = true;
 
 const Login = () => {
@@ -47,13 +48,13 @@ const Login = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-[#9064fe] to-[#7440f8]">
             <img
               className="h-full w-full rounded-md object-cover object-top"
-              src="https://newtononmars.com/images/lastword-1-1.png"
+              src={boyimg}
               style={{ transform: 'scaleX(-1) translateX(-150px)' }}
               alt=""
             />
           </div>
           <div className="absolute" style={{ top: '100px', left: '100px', width: '500px', height: '100px' }}>
-            <h3 className="text-7xl font-bold text-white">MOLITUBE</h3>
+            <h3 className="text-7xl font-bold text-white">Social-App</h3>
           </div>
         </div>
         <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">

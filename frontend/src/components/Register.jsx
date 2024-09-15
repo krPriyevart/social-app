@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react'
 import { Upload } from 'lucide-react';
-
+import boylogo from '../assets/registerlogo.png'
 const Register = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -69,7 +69,7 @@ const Register = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-[#9064fe] to-[#7440f8]" >
             <img
               className="h-full w-full rounded-md object-cover object-top"
-              src="https://newtononmars.com/images/lastword-1-1.png"
+              src={boylogo}
               style={{ transform: 'scaleX(-1) translateX(-150px)' }}
               alt=""
             />
