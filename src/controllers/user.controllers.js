@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const generateAccessAndRefereshTokens = async (userId) => {
     try {
@@ -24,7 +25,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
     const { fullName, email, username, password } = req.body;
-
+    console.log(fullName,email,username,password);
     if ([fullName, email, username, password].some((field) => field?.trim() === "")) {
         throw new ApiError(400, "All fields are required");
     }
@@ -333,6 +334,81 @@ const updateUserCoverImage = asyncHandler(async(req, res) => {
     )
 })
 
+const updateProfile = asyncHandler(async (req, res) => {
+  const { fullName, email, username, password } = req.body;
+  console.log(fullName,email);
+  const avatarLocalPath = req.files?.avatar?.[0]?.path;
+  const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
+    console.log(avatarLocalPath, coverImageLocalPath);
+    
+  // Initialize variables for user update
+  let updatedUser = {};
+  
+  // Update Name and Email
+  if (fullName || email || username) {
+    if ([fullName, email, username].some((field) => field?.trim() === "")) {
+        const existedUser = await User.findOne({
+        $or: [{ username }, { email }]
+    });
+
+    if (existedUser) {
+        throw new ApiError(409, "User with email or username already exists");
+    }
+    }
+    
+    const accountUpdate = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: {
+                fullName,
+                username: username,
+                email: email
+            }
+        },
+        {new: true}
+        
+    ).select("-password");
+    updatedUser = { ...updatedUser, ...accountUpdate._doc };
+  }
+  
+  // Update Password (ensure to add password hashing if necessary)
+  if (password) {
+    const hashedPassword = await bcrypt.hash(password, 10);  // Assuming bcrypt is used
+    await User.findByIdAndUpdate(
+      req.user?._id,
+      { $set: { password: hashedPassword } },
+      { new: true }
+    );
+  }
+
+  // Update Avatar
+  if (avatarLocalPath) {
+    const avatar = await uploadOnCloudinary(avatarLocalPath);
+    if (!avatar.url) throw new ApiError(400, "Error while uploading avatar");
+
+    const avatarUpdate = await User.findByIdAndUpdate(
+      req.user?._id,
+      { $set: { avatar: avatar.url } },
+      { new: true }
+    ).select("-password");
+    updatedUser = { ...updatedUser, ...avatarUpdate._doc };
+  }
+
+  // Update Cover Image
+  if (coverImageLocalPath) {
+    const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+    if (!coverImage.url) throw new ApiError(400, "Error while uploading cover image");
+
+    const coverImageUpdate = await User.findByIdAndUpdate(
+      req.user?._id,
+      { $set: { coverImage: coverImage.url } },
+      { new: true }
+    ).select("-password");
+    updatedUser = { ...updatedUser, ...coverImageUpdate._doc };
+  }
+
+  return res.status(200).json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
+});
 
 
 export { registerUser, 
@@ -343,4 +419,4 @@ export { registerUser,
     getCurrentUser, 
     updateAccountDetails, 
     updateUserAvatar, 
-    updateUserCoverImage,  };
+    updateUserCoverImage,updateProfile   };
