@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { uploadOnCloudinary, deleteOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -268,8 +268,9 @@ const updateAccountDetails = asyncHandler(async(req, res) => {
 });
 
 const updateUserAvatar = asyncHandler(async(req, res) => {
-    const avatarLocalPath = req.file?.path
-
+    const avatarLocalPath = req.files?.avatar[0]?.path;
+    // const avatarLocalPath = req.file?.path;
+console.log(avatarLocalPath);
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is missing")
     }
@@ -301,8 +302,9 @@ const updateUserAvatar = asyncHandler(async(req, res) => {
 })
 
 const updateUserCoverImage = asyncHandler(async(req, res) => {
-    const coverImageLocalPath = req.file?.path
-
+    // const coverImageLocalPath = req.file?.path;
+    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+console.log(coverImageLocalPath);
     if (!coverImageLocalPath) {
         throw new ApiError(400, "Cover image file is missing")
     }
@@ -334,82 +336,170 @@ const updateUserCoverImage = asyncHandler(async(req, res) => {
     )
 })
 
-const updateProfile = asyncHandler(async (req, res) => {
-  const { fullName, email, username, password } = req.body;
-  console.log(fullName,email);
-  const avatarLocalPath = req.files?.avatar?.[0]?.path;
-  const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
-    console.log(avatarLocalPath, coverImageLocalPath);
-    
-  // Initialize variables for user update
-  let updatedUser = {};
-  
-  // Update Name and Email
-  if (fullName || email || username) {
-    if ([fullName, email, username].some((field) => field?.trim() === "")) {
-        const existedUser = await User.findOne({
-        $or: [{ username }, { email }]
-    });
+// const updateProfil = asyncHandler(async (req, res) => {
+//   const { fullName, email, username, password } = req.body;
+//   console.log(fullName,email);
+// //   const avatarLocalPath = req.files?.avatar[0]?.path;
+// //   let coverImageLocalPath;
+// //   if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+// //       coverImageLocalPath = req.files.coverImage[0].path;
+// //   }
+// //     console.log(avatarLocalPath, coverImageLocalPath);
 
-    if (existedUser) {
-        throw new ApiError(409, "User with email or username already exists");
-    }
-    }
+//   // Initialize variables for user update
+//   let updatedUser = {};
+  
+//   // Update Name and Email
+//   if (fullName || email || username) {
+//     if ([fullName, email, username].some((field) => field?.trim() === "")) {
+//         const existedUser = await User.findOne({
+//         $or: [{ username }, { email }]
+//     });
+
+//     if (existedUser) {
+//         throw new ApiError(409, "User with email or username already exists");
+//     }
+//     }
     
-    const accountUpdate = await User.findByIdAndUpdate(
+//     const accountUpdate = await User.findByIdAndUpdate(
+//         req.user?._id,
+//         {
+//             $set: {
+//                 fullName,
+//                 username: username,
+//                 email: email
+//             }
+//         },
+//         {new: true}
+        
+//     ).select("-password");
+//     updatedUser = { ...updatedUser, ...accountUpdate._doc };
+//   }
+  
+//   // Update Password (ensure to add password hashing if necessary)
+//   if (password) {
+//     const hashedPassword = await bcrypt.hash(password, 10);  // Assuming bcrypt is used
+//     await User.findByIdAndUpdate(
+//       req.user?._id,
+//       { $set: { password: hashedPassword } },
+//       { new: true }
+//     );
+//   }
+
+//   // Update Avatar
+// //   if (avatarLocalPath) {
+// //     const avatar = await uploadOnCloudinary(avatarLocalPath);
+// //     // if (!avatar.url) throw new ApiError(400, "Error while uploading avatar");
+
+// //     // TODO: Delete the old avatar if necessary
+// //     console.log(req.user._id, avatar.url);
+// //     const avatarUpdate = await User.findByIdAndUpdate(
+// //       req.user._id,
+// //       { $set: { avatar: avatar.url } },
+// //       { new: true }
+// //     ).select("-password");
+// //     updatedUser = { ...updatedUser, ...avatarUpdate._doc };
+// //   }
+//   //----------------
+// //   if (avatarLocalPath) {
+    
+// // //TODO: delete old image - assignment
+// // const user = await User.findById(user._id).select("-password -refreshToken")
+// // const avatarUrl = user.avatar;
+// // avatarUrl = new URL(avatarUrl).pathname.split('/').pop().split('.')[0];
+// // console.log(avatarUrl);
+// // const avaratDelRes = await deleteOnCloudinary(avatarUrl);
+// // console.log(avaratDelRes);
+// // const avatar = await uploadOnCloudinary(avatarLocalPath)
+// // console.log(avatar);
+
+
+// // const userUpdate = await User.findByIdAndUpdate(
+// //     req.user?._id,
+// //     {
+// //         $set:{
+// //             avatar: avatar.url
+// //         }
+// //     },
+// //     {new: true}
+// // ).select("-password")
+
+// // }
+
+//   // Update Cover Image
+// //   if (coverImageLocalPath) {
+// //     const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+// //     // if (!coverImage.url) throw new ApiError(400, "Error while uploading cover image");
+
+// //     // TODO: Delete the old cover image if necessary
+// //     console.log(req.user._id, avatar.url);
+// //     const coverImageUpdate = await User.findByIdAndUpdate(
+// //       req.user._id,
+// //       { $set: { coverImage: coverImage.url } },
+// //       { new: true }
+// //     ).select("-password");
+// //     updatedUser = { ...updatedUser, ...coverImageUpdate._doc };
+// //   }
+
+//   return res.status(200).json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
+// });
+
+
+const updateProfile = asyncHandler(async (req, res) => {
+    const { fullName, email, username, password } = req.body;
+    console.log(fullName, email);
+    console.log('Files Are Uploaded Properly:',req.files); // Ensure this contains the files
+
+    // Fetch uploaded files
+    const avatarFile = req.files?.avatar?.[0];
+    const coverImageFile = req.files?.coverImage?.[0];
+  
+    console.log('Avatar File Path:', avatarFile?.path);
+    console.log('Cover Image File Path:', coverImageFile?.path);
+  
+    let updatedUser = {};
+  
+    // Update name, email, username
+    if (fullName || email || username) {
+      const accountUpdate = await User.findByIdAndUpdate(
         req.user?._id,
         {
-            $set: {
-                fullName,
-                username: username,
-                email: email
-            }
+          $set: {
+            fullName,
+            username,
+            email,
+          },
         },
-        {new: true}
-        
-    ).select("-password");
-    updatedUser = { ...updatedUser, ...accountUpdate._doc };
-  }
+        { new: true }
+      ).select("-password");
+      updatedUser = { ...updatedUser, ...accountUpdate._doc };
+    }
   
-  // Update Password (ensure to add password hashing if necessary)
-  if (password) {
-    const hashedPassword = await bcrypt.hash(password, 10);  // Assuming bcrypt is used
-    await User.findByIdAndUpdate(
-      req.user?._id,
-      { $set: { password: hashedPassword } },
-      { new: true }
-    );
-  }
-
-  // Update Avatar
-  if (avatarLocalPath) {
-    const avatar = await uploadOnCloudinary(avatarLocalPath);
-    if (!avatar.url) throw new ApiError(400, "Error while uploading avatar");
-
-    const avatarUpdate = await User.findByIdAndUpdate(
-      req.user?._id,
-      { $set: { avatar: avatar.url } },
-      { new: true }
-    ).select("-password");
-    updatedUser = { ...updatedUser, ...avatarUpdate._doc };
-  }
-
-  // Update Cover Image
-  if (coverImageLocalPath) {
-    const coverImage = await uploadOnCloudinary(coverImageLocalPath);
-    if (!coverImage.url) throw new ApiError(400, "Error while uploading cover image");
-
-    const coverImageUpdate = await User.findByIdAndUpdate(
-      req.user?._id,
-      { $set: { coverImage: coverImage.url } },
-      { new: true }
-    ).select("-password");
-    updatedUser = { ...updatedUser, ...coverImageUpdate._doc };
-  }
-
-  return res.status(200).json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
-});
-
+    // Update Avatar
+    if (avatarFile) {
+      const avatar = await uploadOnCloudinary(avatarFile.path);
+      const avatarUpdate = await User.findByIdAndUpdate(
+        req.user._id,
+        { $set: { avatar: avatar.url } },
+        { new: true }
+      ).select("-password");
+      updatedUser = { ...updatedUser, ...avatarUpdate._doc };
+    }
+  
+    // Update Cover Image
+    if (coverImageFile) {
+      const coverImage = await uploadOnCloudinary(coverImageFile.path);
+      const coverImageUpdate = await User.findByIdAndUpdate(
+        req.user._id,
+        { $set: { coverImage: coverImage.url } },
+        { new: true }
+      ).select("-password");
+      updatedUser = { ...updatedUser, ...coverImageUpdate._doc };
+    }
+  
+    return res.status(200).json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
+  });
+  
 
 export { registerUser, 
     loginUser, 
@@ -419,4 +509,4 @@ export { registerUser,
     getCurrentUser, 
     updateAccountDetails, 
     updateUserAvatar, 
-    updateUserCoverImage,updateProfile   };
+    updateUserCoverImage, updateProfile   };

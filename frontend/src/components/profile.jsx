@@ -67,14 +67,15 @@ const Profile = () => {
 
 
     const [formData, setFormData] = useState({
-        fullName: '',
-        email: '',
-        password: '',
-        avatar: null,
-        coverImage: null,
+      fullName: '',
+      email: '',
+      username: '',
+      password: '',
+      avatar: null,
+      coverImage: null,
       });
-      console.log(formData.avatar);
-      console.log(formData.coverImage);
+      // console.log(formData.avatar);
+      // console.log(formData.coverImage);
       const [error, setError] = useState('');
       const [success, setSuccess] = useState('');
       const navigate = useNavigate();
@@ -91,28 +92,82 @@ const Profile = () => {
         const { name, files } = e.target;
         setFormData({
           ...formData,
-          [name]: files[0],
-        });
+          [name]: files[0], // Store only the first file (as expected)
+        }); console.log(name, files[0]);
       };
-      
       const handleSubmit = async (e) => {
         e.preventDefault();
+      
+        const formDataToSend = new FormData();
+        formDataToSend.append('avatar', formData.avatar); // Avatar file
+        formDataToSend.append('coverImage', formData.coverImage); // Cover image file
+        formDataToSend.append('fullName', formData.fullName); // Other form fields
+        formDataToSend.append('email', formData.email);
+        formDataToSend.append('username', formData.username);
+        formDataToSend.append('password', formData.password);
+      
         try {
-          // const response = await axios.post('http://localhost:8080/api/v1/users/login', formData);
-          const response = await axios.post('http://localhost:8080/api/v1/users/profile', formData, {
-            withCredentials: true, 
+          const response = await axios.post('http://localhost:8080/api/v1/users/profile', formDataToSend, {
+            headers: {
+              'Content-Type': 'multipart/form-data', // Make sure this is set for file uploads
+            },
+            withCredentials: true, // Ensure cookies are sent with the request
           });
           console.log(response.data);
           setSuccess(response.data.message);
           setError('');
-        //   setTimeout(() => {
-        //     navigate('/dashboard'); 
-        //   }, 2000);
         } catch (err) {
-          setError(error || 'Something went wrong');
+          setError(err.response?.data?.message || 'Something went wrong');
           setSuccess('');
         }
       };
+      
+      //----------------------------------
+      // const handleSubmit = async (e) => {
+      //   e.preventDefault();
+      //   try {
+      //     // const response = await axios.post('http://localhost:8080/api/v1/users/login', formData);
+      //     const response = await axios.post('http://localhost:8080/api/v1/users/profile', formData, {
+      //       withCredentials: true, 
+      //     });
+      //     console.log(response.data);
+      //     setSuccess(response.data.message);
+      //     setError('');
+      //   //   setTimeout(() => {
+      //   //     navigate('/dashboard'); 
+      //   //   }, 2000);
+      //   } catch (err) {
+      //     setError(error || 'Something went wrong');
+      //     setSuccess('');
+      //   }
+      // };
+      //-------------------------------
+      // const handleSubmit = async (e) => {
+      //   e.preventDefault();
+        
+      //   const formDataToSend = new FormData();
+      //   formDataToSend.append('avatar', formData.avatar); // Avatar file
+      //   formDataToSend.append('coverImage', formData.coverImage); // Cover image file
+      //   formDataToSend.append('fullName', formData.fullName); // Other form fields
+      //   formDataToSend.append('email', formData.email);
+      //   formDataToSend.append('password', formData.password);
+      
+      //   try {
+      //     const response = await axios.post('http://localhost:8080/api/v1/users/profile', formDataToSend, {
+      //       headers: {
+      //         'Content-Type': 'multipart/form-data',
+      //       },
+      //       withCredentials: true, // Ensure cookies are sent with the request
+      //     });
+      //     console.log(response.data);
+      //     setSuccess(response.data.message);
+      //     setError('');
+      //   } catch (err) {
+      //     setError(err.response?.data?.message || 'Something went wrong');
+      //     setSuccess('');
+      //   }
+      // };
+      
     useEffect(() => {
         ;(async () => {
           try {
@@ -141,7 +196,7 @@ const Profile = () => {
           <tr>
             <td>Name</td>
             <td>
-              <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className='btn' required />
+              <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className='btn' />
             </td>
           </tr>
           <tr>
