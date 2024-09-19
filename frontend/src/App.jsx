@@ -4,6 +4,7 @@ import Register from './components/Register.jsx';
 import Login from './components/Login.jsx';
 import Logout from './components/Logout.jsx';
 import Profile from './components/profile.jsx';
+import Note from './components/Note.jsx';
 
 import Layout from './components/Layout.jsx';
 import Dashboard from './components/Dashboard.jsx';
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/note" element={<Note />} />
         <Route path="/logout" element={<Logout />} />
       </Routes>
     </BrowserRouter>

@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Target the entire scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* The "track" or the background of the scrollbar */
+  ::-webkit-scrollbar-track {
+    background: #003103; /* Light gray */
+  }
+  
+  /* The part of the scrollbar that represents the current position */
+  ::-webkit-scrollbar-thumb {
+    background-color: #005e03; /* Dark gray */
+    border-radius: 10px;
+    border: 0px solid #f1f1f1; /* Optional border */
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #008d00; /* Darker gray */
+  }
+  

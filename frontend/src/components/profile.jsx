@@ -183,9 +183,9 @@ const Profile = () => {
   return (
   <>
       <Layout>
-       <div className='w-full h-auto bg-red-600 py-20 flex justify-center'>
-       
-       <div className='bg-black h-dvh w-1/2 rounded-md '>
+       <div className='w-full h-svh bg-black py-20 flex justify-center' >
+       <img src={formData.coverImage} className='w-full h-screen absolute top-12 opacity-25'   />
+       <div className='bg-black h-dvh w-1/2 rounded-md ' style={{zIndex:'1'}}>
         <div className='w-full h-32 border-0 border-sky-500 flex justify-center items-center' 
         style={{ backgroundImage: `url(${formData.coverImage})`, backgroundSize: 'cover' }}>
             <img src={formData.avatar} className='w-20 h-20 rounded-full shadow-lg border-1 border-zinc-500' />

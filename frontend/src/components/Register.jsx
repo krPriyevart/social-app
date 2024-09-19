@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react'
 import { Upload } from 'lucide-react';
 import boylogo from '../assets/registerlogo.png'
+
 const Register = () => {
   const [formData, setFormData] = useState({
     fullName: '',

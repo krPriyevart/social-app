@@ -50,6 +50,10 @@ const Layout = ({ children }) => {
               <ul>
                 <Link to="/profile">
                   <li className='cursor-pointer'>Profile</li>
+                </Link>      
+                <hr />          
+                <Link to="/dashboard">
+                  <li className='cursor-pointer'>Dashboard</li>
                 </Link>
                 <hr />
                 <Link to="/logout">
