@@ -39,6 +39,45 @@ const userSchema = new Schema(
              ref:"Video"
         }   
         ],
+        noteIds: [
+            {
+              type: Schema.Types.ObjectId,
+              ref:"NoteId"  
+            }
+        ],
+        nnoteIds: {
+            noteIdss: [
+                {
+                noteId: {
+                    type:String,
+                    required: true,
+                    unique: true,
+                    lowercase: true,
+                    index:true,
+                    trim: true
+                },
+                title: {
+                    type: String,
+                    required: true,
+                },       
+                noteData: {
+                    type: String,
+                    required: true,
+                },
+                isAdmin: {
+                    type: Boolean,
+                    default: false
+                },
+                expDate: {
+                    type: Number,
+                    dafault: 2
+                },
+                attachment: {
+                    type: String,
+                }
+            }
+            ]
+        },
         password: {
             type: String,
             required:[true, 'Password is required']

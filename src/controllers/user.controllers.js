@@ -500,7 +500,20 @@ const updateProfile = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
   });
   
-
+  const dashboard = asyncHandler(async (req, res) => {
+    console.log('Received body:', req.body);
+    const { noteId, title, noteData, expDate } = req.body;
+    // console.log('Received data:', { noteId, title, noteData, expDate });
+  
+    // Check for form fields:
+    if (!noteId || !title || !noteData || !expDate) {
+      return res.status(400).json({ message: 'Missing fields' });
+    }
+  
+    // Proceed with your logic
+    res.json({ message: 'Success' });
+  });
+  
 export { registerUser, 
     loginUser, 
     logoutUser, 
@@ -509,4 +522,4 @@ export { registerUser,
     getCurrentUser, 
     updateAccountDetails, 
     updateUserAvatar, 
-    updateUserCoverImage, updateProfile   };
+    updateUserCoverImage, updateProfile, dashboard   };

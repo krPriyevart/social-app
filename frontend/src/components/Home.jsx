@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <header className="header">
-        <div className="logo">SOCIALAPP</div>
+        <div className="logo text-green-500">SOCIALAPP</div>
         <nav className="nav">
           <Link to="/" className="nav-link">Home</Link>
           <Link to="#" className="nav-link">Features</Link>
@@ -21,8 +21,7 @@ const Home = () => {
 
       <main className="main">
         <div className="content">
-          <h1>Track Your Youtube Playlist<br />
-            SMARTER.</h1>
+          <h1>Cloud Note Book</h1>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
           <div className="buttons">
           <Link to="/Register"><button className="button">Sign Up</button></Link>
