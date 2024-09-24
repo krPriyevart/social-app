@@ -44,38 +44,38 @@ const userSchema = new Schema(
               type: Schema.Types.ObjectId,
               ref:"NoteId"  
             }
-        ],
-        nnoteIds: {
-            noteIdss: [
+        ],  
+        notesWithDetails: {
+            notes: [
                 {
-                noteId: {
-                    type:String,
-                    required: true,
-                    unique: true,
-                    lowercase: true,
-                    index:true,
-                    trim: true
-                },
-                title: {
-                    type: String,
-                    required: true,
-                },       
-                noteData: {
-                    type: String,
-                    required: true,
-                },
-                isAdmin: {
-                    type: Boolean,
-                    default: false
-                },
-                expDate: {
-                    type: Number,
-                    dafault: 2
-                },
-                attachment: {
-                    type: String,
+                    noteId: {
+                        type: String,
+                        required: true,
+                        unique: true, // if necessary, based on use case
+                        lowercase: true,
+                        index: true,
+                        trim: true
+                    },
+                    title: {
+                        type: String,
+                        required: true,
+                    },       
+                    noteData: {
+                        type: String,
+                        required: true,
+                    },
+                    isAdmin: {
+                        type: Boolean,
+                        default: false
+                    },
+                    expDate: {
+                        type: Number,
+                        default: 2  // fixed typo from 'dafault'
+                    },
+                    attachment: {
+                        type: String, // Cloudinary URL or local path
+                    }
                 }
-            }
             ]
         },
         password: {

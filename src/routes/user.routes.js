@@ -20,9 +20,36 @@ router.route("/register").post(
 ]),registerUser);
 
 router.route("/login").post(loginUser);
-router.route("/dashboard").post(dashboard);
+router.route("/dashboard").post(verifyJWT, upload.fields([
+    { 
+        name: "noteId",
+        maxCount: 1
+    },
+    { 
+        name: "title",
+        maxCount: 1
+    },
+    { 
+        name: "noteData",
+        maxCount: 1
+    },
+    { 
+        name: "expDate",
+        maxCount: 1
+    },
+    { 
+        name: "attachment",
+        maxCount: 1
+    }
+]), (req, res) => {
+    console.log(req.body);
+    console.log(req.files);
+    dashboard(req, res);
+});
+
+
 router.route("/logout").post(verifyJWT, logoutUser);
-router.route("/refresh-token").post(refreshAccessToken);
+router.route("/refresh-token").post(refreshAccessToken);    
 
 router.route("/userdasboard").post(verifyJWT, getCurrentUser);
 

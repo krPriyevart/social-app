@@ -501,17 +501,72 @@ const updateProfile = asyncHandler(async (req, res) => {
   });
   
   const dashboard = asyncHandler(async (req, res) => {
-    console.log('Received body:', req.body);
-    const { noteId, title, noteData, expDate } = req.body;
-    // console.log('Received data:', { noteId, title, noteData, expDate });
+    try {
+      console.log('Received body:', req.body);
+      const { noteId, title, noteData, expDate } = req.body;
+      
+      // Extract file data from multer
+      const attachment = req.files?.attachment?.[0];
+        console.log(attachment.path);
+      // Ensure required fields are present
+      if (!noteId || !title || !noteData || !expDate) {
+        return res.status(400).json({ message: 'Missing required fields' });
+      }
+      let uploadedAttachment = null;
+    
+      if (attachment) {
+        console.log('File path:', attachment.path);
+        uploadedAttachment = await uploadOnCloudinary(attachment.path);
+
+        // Handle attachment (e.g., upload to cloud)
+      }
+    
   
-    // Check for form fields:
-    if (!noteId || !title || !noteData || !expDate) {
-      return res.status(400).json({ message: 'Missing fields' });
+      // Create or update the note in the user's data
+      let userNote = {};
+      const createNote = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $push: {
+                "notesWithDetails.notes": {
+                    noteId: noteId,
+                    title: title,
+                    noteData: noteData,
+                    attachment: uploadedAttachment.url,
+                    expDate: expDate,
+
+                }
+        }},
+        { new: true }
+      ).select('-password');
+  
+      userNote = { ...userNote, ...createNote._doc };
+  
+      // If there's an attachment, upload it to Cloudinary and update the user note
+    //   if (attachment) {
+    //     const uploadedAttachment = await uploadOnCloudinary(attachment.path);
+        
+    //     const attachmentUpdate = await User.findByIdAndUpdate(
+    //       req.user._id,
+    //       { 
+    //         $push: { 
+    //             "notesWithDetails.notes": {
+    //             attachment: uploadedAttachment.url 
+    //         }
+    //         } }, // Save the Cloudinary URL
+    //       { new: true }
+    //     ).select('-password');
+  
+    //     userNote = { ...userNote, ...attachmentUpdate._doc };
+    //   }
+  
+      // Respond with success and the updated note
+      return res.status(200).json({ message: 'Profile updated successfully', userNote });
+  
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      return res.status(500).json({ message: 'Server error' });
     }
-  
-    // Proceed with your logic
-    res.json({ message: 'Success' });
   });
   
 export { registerUser, 

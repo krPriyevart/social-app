@@ -13,6 +13,7 @@ const Layout = ({ children }) => {
     ;(async () => {
       try {
         const response = await axios.post('http://localhost:8080/api/v1/users/userdasboard');
+        console.log(response);
         console.log(response.data.data);
         setUsername(response.data.data);
       } catch (error) {
