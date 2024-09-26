@@ -97,19 +97,13 @@ const Dashboard = () => {
         <div className='w-2/12 h-svh bg-[#001D02] text-[#00FF09] py-20 overflow-hidden  '>
           <p className='px-28 text-xl'>NOTES</p>
           <ul className='px-5  my-5 text-lg'>
-            <li className='bg-black rounded-md'>Title1: Utilities for controlling </li>
-            <li>Title2: Utilities for controlling </li>
-            <li>Title1: Utilities for controlling </li>
-            <li>Title1: Utilities for controlling </li>
-            <li>{getData.notesWithDetails
-            }</li>
-            {/* {
-              getData.map((url)=>{
-              return (
-                <img src={url} className="w-1/3"/>
-            )
-            })
-            } */}
+             {getData.userNote && getData.userNote.notesWithDetails && getData.userNote.notesWithDetails.notes ? (
+            getData.userNote.notesWithDetails.notes.map((note, index) => (
+            <li key={note._id || index}>{note.title}</li>
+            ))
+            ) : (
+            <li>No notes available</li>
+             )}
           </ul>
         </div>
         <div className='w-10/12 h-svh border-0 border-sky-500 py-16 flex-row justify-center '>
