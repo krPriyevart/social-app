@@ -42,7 +42,7 @@ const Register = () => {
     });
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/users/register', formDataToSend, 
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/users/register`, formDataToSend, 
       {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -52,9 +52,9 @@ const Register = () => {
         withCredentials: true, // Ensure cookies are sent with requests
       });
       setSuccess('User Registered Successfully');
-      // setTimeout(() => {
-      //   navigate('/login');
-      // }, 3000);
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
       setError('');
     } catch (err) {
       setError(err.response.data.message || 'Something went wrong');

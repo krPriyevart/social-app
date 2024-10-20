@@ -35,7 +35,7 @@ const Home = () => {
       </main>
 
       <footer className="footer">
-      <p>Molitube.com</p>
+      <p>socialapp.com</p>
         <div className="footer-content">
         
           <div className="social-links">
