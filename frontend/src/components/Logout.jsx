@@ -9,7 +9,7 @@ const Logout = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/users/logout', {}, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/users/logout`, {}, {
         withCredentials: true, 
       });
       console.log(response.data.message);

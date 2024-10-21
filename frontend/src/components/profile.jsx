@@ -44,7 +44,7 @@ const Profile = () => {
     //     });
     
     //     try {
-    //       const response = await axios.post('http://localhost:8080/api/v1/users/profile', formDataToSend, 
+    //       const response = await axios.post('`${import.meta.env.VITE_API_URL}/api/v1/users/profile', formDataToSend, 
     //       {
     //         headers: {
     //           'Content-Type': 'multipart/form-data',
@@ -107,7 +107,7 @@ const Profile = () => {
         formDataToSend.append('password', formData.password);
       
         try {
-          const response = await axios.post('http://localhost:8080/api/v1/users/profile', formDataToSend, {
+          const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/users/profile`, formDataToSend, {
             headers: {
               'Content-Type': 'multipart/form-data', // Make sure this is set for file uploads
             },
@@ -126,8 +126,8 @@ const Profile = () => {
       // const handleSubmit = async (e) => {
       //   e.preventDefault();
       //   try {
-      //     // const response = await axios.post('http://localhost:8080/api/v1/users/login', formData);
-      //     const response = await axios.post('http://localhost:8080/api/v1/users/profile', formData, {
+      //     // const response = await axios.post('`${import.meta.env.VITE_API_URL}/api/v1/users/login', formData);
+      //     const response = await axios.post('`${import.meta.env.VITE_API_URL}/api/v1/users/profile', formData, {
       //       withCredentials: true, 
       //     });
       //     console.log(response.data);
@@ -153,7 +153,7 @@ const Profile = () => {
       //   formDataToSend.append('password', formData.password);
       
       //   try {
-      //     const response = await axios.post('http://localhost:8080/api/v1/users/profile', formDataToSend, {
+      //     const response = await axios.post('`${import.meta.env.VITE_API_URL}/api/v1/users/profile', formDataToSend, {
       //       headers: {
       //         'Content-Type': 'multipart/form-data',
       //       },
@@ -171,7 +171,7 @@ const Profile = () => {
     useEffect(() => {
         ;(async () => {
           try {
-            const response = await axios.post('http://localhost:8080/api/v1/users/userdasboard');
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/users/userdasboard`);
             console.log(response.data.data);
             setFormData(response.data.data);
           } catch (error) {

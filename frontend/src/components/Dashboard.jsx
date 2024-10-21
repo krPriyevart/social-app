@@ -71,7 +71,7 @@ const Dashboard = () => {
 
   
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/users/dashboard', formDataToSend, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/users/dashboard`, formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
