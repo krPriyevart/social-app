@@ -2,17 +2,14 @@ import React, { useEffect, useState } from 'react';
 import './stylesheet/Dashboard.css';
 import Layout from './Layout.jsx';
 import Url from './utils/url.jsx';
-import PrevImg from './utils/imgPrev.jsx';
 import axios from 'axios';
-import boy1 from '../assets/boy1.png';
 import boy2 from '../assets/boy2.jpg';
-import { Copy } from 'lucide-react';
 import { FilePenLine } from 'lucide-react';
 import { Save } from 'lucide-react';
 import { Share2 } from 'lucide-react';
 import { Trash2 } from 'lucide-react';
 import { ImagePlus } from 'lucide-react';
-import { NoteId } from '../../../src/models/noteId.model.js';
+
 
 const Dashboard = () => {
   
