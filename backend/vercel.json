@@ -8,11 +8,11 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "/index.js",
+      "src": "/api/(.*)",
+      "dest": "/api/v1/users/$1", 
       "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
       "headers": {
-        "Access-Control-Allow-Origin": "https://social-app-frontend-tan.vercel.app",
+        "Access-Control-Allow-Origin": "https://curd-simple-frontend.vercel.app",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Allow-Credentials": "true"
@@ -20,4 +20,3 @@
     }
   ]
 }
-
