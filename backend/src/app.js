@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser"
 const app = express()
 const router = Router()
 app.use(cors({
-    origin: ['https://social-app-frontend-tan.vercel.app'],
+    origin: '*',
     credentials: true
 }))
 app.use(express.json({limit:"16KB"}))
