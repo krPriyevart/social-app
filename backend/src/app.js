@@ -17,11 +17,11 @@ app.use(cookieParser())
 import userRouter from './routes/user.routes.js'
 
 //routes declaration
-app.use("/api/v1/users",userRouter)
-router.get("/", (req, res) => {
+app.use("/api/v1/users",userRouter);
+app.get("/", (req, res) => {
     res.send("ok");
 });
-router.get("/health", (req, res) =>{
+app.get("/health", (req, res) =>{
     res.send("ok!!");
-})
+});
 export default app 
