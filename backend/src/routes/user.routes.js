@@ -64,4 +64,5 @@ router.route("/profile").post(verifyJWT, upload.fields([
     }
 ]), updateProfile );
 
+
 export default router 
